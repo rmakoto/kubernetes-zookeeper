@@ -56,7 +56,7 @@ spec:
       containers:
       - name: kubernetes-zookeeper
         imagePullPolicy: Always
-        image: "gcr.io/google_containers/kubernetes-zookeeper:1.0-3.4.10"
+        image: "rodrigomakoto/kubernetes-zookeeper:3.5.5"
         resources:
           requests:
             memory: "1Gi"
@@ -88,7 +88,8 @@ spec:
           --purge_interval=12 \
           --max_session_timeout=40000 \
           --min_session_timeout=4000 \
-          --log_level=INFO"
+          --log_level=INFO \
+          --datadir_autocreate_disable=1"
         readinessProbe:
           exec:
             command:
