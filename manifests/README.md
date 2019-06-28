@@ -103,8 +103,9 @@ From another Pod you can use the same technique to retrieve the value.
 
 ```bash
 $ kubectl exec -ti zk-1 -- bash
-zookeeper@zk-1:/$ zkCli.                                                                                             
-zkCli.cmd  zkCli.sh   
+zookeeper@zk-1:/$ zkCli.
+zkCli.cmd  zkCli.sh
+
 [zk: localhost:2181(CONNECTED) 0] get /hello
 world
 cZxid = 0x800000003
@@ -128,7 +129,7 @@ zookeeper_mini.yaml manifest to decrease the memory resource request and the jvm
 ```yaml
  name: kubernetes-zookeeper
         imagePullPolicy: Always
-        image: "gcr.io/google_samples/kubernetes-zookeeper:1.0-3.4.10"
+        image: "rodrigomakoto/kubernetes-zookeeper:3.5.5"
         resources:
           requests:
             memory: "512Gi"
@@ -160,13 +161,14 @@ zookeeper_mini.yaml manifest to decrease the memory resource request and the jvm
           --purge_interval=12 \
           --max_session_timeout=40000 \
           --min_session_timeout=4000 \
-          --log_level=INFO"
+          --log_level=INFO \
+          --datadir_autocreate_disable=1"
 ```
 
 Apply the manifest using `kubectl apply`.
 
 ```bash
-$ kubectl apply -f manifests/zookeeper.yaml 
+$ kubectl apply -f manifests/zookeeper.yaml
 service "zk-hs" configured
 service "zk-cs" configured
 poddisruptionbudget "zk-pdb" configured
@@ -276,7 +278,7 @@ spec:
       containers:
       - name: kubernetes-zookeeper
         imagePullPolicy: Always
-        image: "gcr.io/google_containers/kubernetes-zookeeper:1.0-3.4.10"
+        image: "rodrigomakoto/kubernetes-zookeeper:3.5.5"
         resources:
           requests:
             memory: "4Gi"
@@ -308,7 +310,8 @@ spec:
           --purge_interval=12 \
           --max_session_timeout=40000 \
           --min_session_timeout=4000 \
-          --log_level=INFO"
+          --log_level=INFO \
+          --datadir_autocreate_disable=1"
         readinessProbe:
           exec:
             command:

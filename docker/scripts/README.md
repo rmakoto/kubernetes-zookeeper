@@ -3,7 +3,6 @@
 ## Starting a ZooKeeper Server
 `start-zookeeper` configures and starts a ZooKeeper server. Its parameters are described below.
 
-
     --servers           The number of servers in the ensemble. The default 
                         value is 1. This must be set to 
                         `StatefulSet.Spec.Replicas`.
@@ -70,7 +69,11 @@
 
     --log_level         The log level for the zookeeeper server. Either FATAL,
                         ERROR, WARN, INFO, DEBUG. The default is INFO.
-                        
+
+    --datadir_autocreate_disable When running zkServer.sh autocreate can be 
+                        disabled by setting the environment variable 
+                        ZOO_DATADIR_AUTOCREATE_DISABLE to 1
+
 ## Readiness and Liveness Checks
 `zookeeper-ready` performs a health check using the `ruok` four letter word. It takes the client port as a parameter. 
 If the servers is healthy it exits normally. If the server is unhealthy it exits abnormally causing the readiness 
