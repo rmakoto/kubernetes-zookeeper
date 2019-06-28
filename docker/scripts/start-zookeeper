@@ -134,6 +134,10 @@ Starts a ZooKeeper server based on the supplied options.
 
     --log_level         The log level for the zookeeeper server. Either FATAL,
                         ERROR, WARN, INFO, DEBUG. The default is INFO.
+    
+    --datadir_autocreate_disable When running zkServer.sh autocreate can be 
+                        disabled by setting the environment variable 
+                        ZOO_DATADIR_AUTOCREATE_DISABLE to 1
 "
 }
 
@@ -155,6 +159,7 @@ ZK_MIN_SESSION_TIMEOUT=${ZK_MIN_SESSION_TIMEOUT:- $((ZK_TICK_TIME*2))}
 ZK_MAX_SESSION_TIMEOUT=${ZK_MAX_SESSION_TIMEOUT:- $((ZK_TICK_TIME*20))}
 ZK_SNAP_RETAIN_COUNT=${ZK_SNAP_RETAIN_COUNT:-3}
 ZK_PURGE_INTERVAL=${ZK_PURGE_INTERVAL:-0}
+ZK_DATADIR_AUTOCREATE_DISABLE=${ZK_DATADIR_AUTOCREATE_DISABLE:-0}
 
 optspec=":hv-:"
 while getopts "$optspec" optchar; do
@@ -216,6 +221,9 @@ while getopts "$optspec" optchar; do
                 log_level=*)
                     ZK_LOG_LEVEL=${OPTARG##*=}
                     ;;
+                datadir_autocreate_disable=*)
+                    ZK_DATADIR_AUTOCREATE_DISABLE=${OPTARG##*=}
+                    ;;
                 *)
                     echo "Unknown option --${OPTARG}" >&2
                     exit 1
@@ -267,6 +275,8 @@ function validate_env() {
         exit 1
     fi
 
+    export ZOO_DATADIR_AUTOCREATE_DISABLE=$ZK_DATADIR_AUTOCREATE_DISABLE
+
     MY_ID=$((ORD+1))
     echo "ZK_REPLICAS=$ZK_REPLICAS"
     echo "MY_ID=$MY_ID"
@@ -289,6 +299,7 @@ function validate_env() {
     echo "ZK_SNAP_RETAIN_COUNT=$ZK_SNAP_RETAIN_COUNT"
     echo "ZK_PURGE_INTERVAL=$ZK_PURGE_INTERVAL"
     echo "ZK_LOG_LEVEL: $ZK_LOG_LEVEL"
+    echo "ZK_DATADIR_AUTOCREATE_DISABLE: $ZK_DATADIR_AUTOCREATE_DISABLE"
     echo "ID_FILE: $ID_FILE"
     echo "LOGGER_PROPS_FILE: $LOGGER_PROPS_FILE"
     echo "JAVA_ENV_FILE: $JAVA_ENV_FILE"
