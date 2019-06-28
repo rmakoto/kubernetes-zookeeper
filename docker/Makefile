@@ -1,4 +1,4 @@
-VERSION=3.5.5
+VERSION=1.0-3.5.5
 PROJECT=rodrigomakoto
 
 all: build
